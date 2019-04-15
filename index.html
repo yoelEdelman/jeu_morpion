@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="vendor/bootstrap-4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+        <style>
+            .row .col-md-2{
+                width: 150px;
+                height: 150px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin: 5px;
+            }
+            .fa-times{
+                color: red;
+                font-size: 50px;
+            }
+            .fa-circle{
+                color: green;
+                font-size: 50px;
+            }
+
+        </style>
+    </head>
+    <body class="bg-dark">
+        <div class="container-fluid text-center p-5">
+            <div class="row justify-content-center">
+                <div id="txt-player1" class="col-md-6 alert alert-danger" role="alert"></div>
+                <div id="txt-player2" class="col-md-6 alert alert-success" role="alert"></div>
+            </div>
+            <div class="row justify-content-center">
+                <div id="a1" class="col-md-2 bg-light rounded block"></div>
+                <div id="b1" class="col-md-2 bg-light rounded block"></div>
+                <div id="c1" class="col-md-2 bg-light rounded block"></div>
+            </div>
+            <div class="row justify-content-center">
+                <div id="a2" class="col-md-2 bg-light rounded block"></div>
+                <div id="b2" class="col-md-2 bg-light rounded block"></div>
+                <div id="c2" class="col-md-2 bg-light rounded block"></div>
+            </div>
+            <div class="row justify-content-center">
+                <div id="a3" class="col-md-2 bg-light rounded block"></div>
+                <div id="b3" class="col-md-2 bg-light rounded block"></div>
+                <div id="c3" class="col-md-2 bg-light rounded block"></div>
+            </div>
+        </div>
+
+
+
+
+    <script>
+        let player1 = document.getElementById("txt-player1")
+        let player2 = document.getElementById("txt-player2")
+
+        let blocks = document.querySelectorAll(".block")
+
+        let playerTurn = 0
+        let firstPlayer = [], secondPlayer = []
+        let player1Score = 0, player2Score = 0
+
+
+        const winner = [
+            ['a1','b1','c1'],
+            ['a2','b2','c2'],
+            ['a3','b3','c3'],
+            ['a1','a2','a2'],
+            ['b1','b2','b3'],
+            ['c1','c2','c3'],
+            ['a1','b2','c3'],
+            ['a3','b2','c1']
+        ]
+
+        player1.innerText = "Player-1 : " + player1Score + " !"
+        player2.innerText = "Player-2 : " + player2Score + " !"
+
+
+        const func = function (e) {
+            if(playerTurn === 0){
+                if (e.hasAttribute("exist")) {
+                    return
+                }
+                else {
+                    e.innerHTML = `<i class="fas fa-times"></i>`
+                    e.setAttribute("exist", 0)
+                    playerTurn = 1
+                    if (e.getAttribute('exist') == 0){
+                        firstPlayer.push(e.getAttribute('id'))
+                        console.log(firstPlayer)
+                    }
+                    if(result(firstPlayer)){
+                        player1Score++
+                        // player1.innerText += player1Score
+
+
+                        alert("Congrats player one you win")
+                    }
+                }
+            }
+            else {
+                if (e.hasAttribute("exist")) {
+                    return
+                }
+                else {
+                    e.innerHTML = `<i class="far fa-circle"></i>`
+                    e.setAttribute("exist", 1)
+                    playerTurn = 0
+
+                    if (e.getAttribute('exist') == 1){
+                        secondPlayer.push(e.getAttribute('id'))
+                        console.log(secondPlayer)
+                    }
+                    if(result(secondPlayer)){
+                        player2Score++
+                        // player2.innerText += player2Score
+
+
+                        alert("Congrats player two you win")
+                    }
+                }
+            }
+        }
+
+
+        for (let block of blocks){
+            block.addEventListener('click', function() {
+                func(this)
+            })
+        }
+
+        const result = function(array){
+            let finalResult = false
+            for(let win of winner){
+                let res = win.every(val => array.indexOf(val) !== -1)
+                if(res){
+                    finalResult = true;
+                    break;
+                }
+            }
+            return finalResult;
+        }
+
+
+    </script>
+
+
+
+
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/popper.min.js" ></script>
+    <script src="vendor/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+        
+    </body>
+</html>
